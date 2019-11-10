@@ -143,7 +143,7 @@ long getLong(string str) {
 
 //fce kontrolujici pocet zadanych argumentu
 void checkArgCount(int argc, char *argv[]) {
-    if ((argc < 5) || (argc > 9)) {
+    if ((argc < 5) || (argc > 10)) {
         cerr << "Spatny pocet argumentu." << endl;
         exit(1);
     }
@@ -188,6 +188,17 @@ void loadCommand(int argc, char *argv[], myArgs *args) {
             if (strcmp(argv[6],"update") == 0){
                 args->command = item_update;
                 args->id = getLong(argv[8]);
+                return;
+            }
+        }
+    }
+    if (argc == 10) {
+        if (strcmp(argv[5],"item") == 0){
+            args->name = argv[7];
+            if (strcmp(argv[6],"update") == 0){
+                args->command = item_update;
+                args->id = getLong(argv[8]);
+                args->content = argv[9];
                 return;
             }
         }
@@ -864,6 +875,7 @@ string cmdItemAdd(myArgs arguments){
     header.append("Content-Type: text/plain\r\n");
     header.append("Content-Length: " + to_string(arguments.content.length()));
     header.append("\r\n\r\n");
+
     header.append(arguments.content);
     return header;
 }
@@ -883,7 +895,37 @@ string cmdItemUpdate(myArgs arguments){
     header.append("Content-Length: " + to_string(arguments.content.length()));
     header.append("\r\n\r\n");
 
+    header.append(arguments.content);
     return header;
+}
+
+string createRequest(myArgs arguments){
+    string hello;
+    switch(arguments.command){
+        case boards:
+            hello = cmdBoards(arguments);
+            break;
+        case board_add:
+            hello = cmdBoardAdd(arguments);
+            break;
+        case board_delete:
+            hello = cmdBoardDelete(arguments);
+            break;
+        case board_list:
+            hello = cmdBoardList(arguments);
+            break;
+        case item_add:
+            hello = cmdItemAdd(arguments);
+            break;
+        case item_delete:
+            hello = cmdItemDelete(arguments);
+
+            break;
+        case item_update:
+            hello = cmdItemUpdate(arguments);
+            break;
+    };
+    return hello;
 }
 
 int main(int argc, char *argv[])
@@ -937,30 +979,7 @@ int main(int argc, char *argv[])
         return -1;
     }
 
-    switch(arguments.command){
-        case boards:
-            hello = cmdBoards(arguments);
-            break;
-        case board_add:
-            hello = cmdBoardAdd(arguments);
-            break;
-        case board_delete:
-            hello = cmdBoardDelete(arguments);
-            break;
-        case board_list:
-            hello = cmdBoardList(arguments);
-            break;
-        case item_add:
-            hello = cmdItemAdd(arguments);
-            break;
-        case item_delete:
-            hello = cmdItemDelete(arguments);
-
-            break;
-        case item_update:
-            hello = cmdItemUpdate(arguments);
-            break;
-    };
+    hello = createRequest(arguments);
 
 
     send(sock, hello.c_str(), hello.length(), 0);
