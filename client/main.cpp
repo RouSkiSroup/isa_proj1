@@ -12,6 +12,7 @@
 #include <netinet/in.h>
 #include <unistd.h>
 #include <arpa/inet.h>
+#include <regex>
 
 using namespace std;
 
@@ -332,6 +333,18 @@ string createRequest(myArgs arguments){
     return hello;
 }
 
+bool wasSuccesful(string response){
+    smatch match;
+    string line = response.substr(0, response.find("\r\n"));
+
+    regex expression(R"(HTTP\/1.1.*4\d\d.*)");
+    if (regex_search(line, match, expression))
+    {
+        return false;
+    }
+    return true;
+}
+
 int main(int argc, char *argv[])
 {
     if (checkHelp(argc, argv)){
@@ -376,6 +389,10 @@ int main(int argc, char *argv[])
     if (getContent(buffer, &content) > 0 ){
         cout << content << endl;
     }
-
-    return 0;
+    if(wasSuccesful(buffer)){
+        return 0;
+    }
+    else{
+        return -1;
+    }
 }

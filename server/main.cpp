@@ -421,18 +421,19 @@ string createResponse(commandDataStruct command_data, vector<boardStruct> *board
 }
 
 //function to check if -h is set
-int checkHelp(int argc, char* argv[]){
+bool checkHelp(int argc, char* argv[]){
     if ((argc == 2) && (strcmp(argv[1],"-h") == 0)){
         cout << "Server which is part of isa http board project.\n\
 Server waits for request from client and returns response.\n\
 For more information about requests refer to client.\n\
 Arguments: \n\
 \t -p <port to listen on>" << endl;
-        return 1;
+        return true;
     }
+    return false;
 }
 
-void checkArgCount(argc){
+void checkArgCount(int argc){
     if (argc != 3){
         cerr << "Bad arg count" << endl;
         exit(-1);
