@@ -420,22 +420,38 @@ string createResponse(commandDataStruct command_data, vector<boardStruct> *board
     return response;
 }
 
-int main(int argc, char* argv[]) {
+//function to check if -h is set
+int checkHelp(int argc, char* argv[]){
     if ((argc == 2) && (strcmp(argv[1],"-h") == 0)){
         cout << "Server which is part of isa http board project.\n\
 Server waits for request from client and returns response.\n\
 For more information about requests refer to client.\n\
 Arguments: \n\
 \t -p <port to listen on>" << endl;
-        return 0;
+        return 1;
     }
+}
+
+void checkArgCount(argc){
     if (argc != 3){
         cerr << "Bad arg count" << endl;
+        exit(-1);
     }
+}
+
+int main(int argc, char* argv[]) {
+    if(checkHelp(argc,argv)){
+        return 0;
+    }
+    checkArgCount(argc);
+
     if (strcmp(argv[1],"-p") != 0){
-        cerr << "argument -p is required" << endl;
+        cerr << "The program accepts only parameter -p." << endl;
     }
     long port = getLong(argv[2]);
+    if(port == 65535){
+        cerr << "Using port 65535" << endl;
+    }
 
     vector<boardStruct> boards_list;
 
