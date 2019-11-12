@@ -1,0 +1,50 @@
+===============================================================AUTOR===================================================================================
+Filip Jeřábek - xjerab24
+VUT FIT 2019
+
+Text je přeložený a převzatý ze zadání projektu a upravený dle potřeby.
+===============================================================POPIS===================================================================================
+
+Aplikace umožňuje klientům spravovat nástěnky na serveru pomocí http API. API umožňuje prohlížet, přidávat, upravovat a mazat jak příspěvky na nástěnkách, tak i nástěnky samotné. Nástěnka obsahuje seřazený seznam textových příspěvků.
+
+===============================================================NÁSTĚNKY================================================================================
+
+Nástěnky
+
+Nástěnkou se rozumí uspořádaný seznam textových (ASCII) příspěvků. Každá příspěvek má id (číslované od 1) a textový obsah, který může být víceřadkový. Id není permanentní, koresponduje s aktuální pozicí s seznamu. Operace nad nástěnkou by neměly měnit pořadá příspěvků. Název nástěnky může obsahovat znaky a-z,A-Z a 0-9. Formát zobrazení nástěnky je:
+
+[název]       
+1. První příspěvek.       
+2. Druhý příspevek.       
+...       
+n. N-tý (poslední příspevek).
+
+===============================================================API=====================================================================================
+
+API je definované následovně:
+
+    GET /boards - Vráti seznam dostupných nástěnek, jedna na řádek.
+    POST /boards/name - Vytvoří novou prázdnou nástěnku s názvem name.
+    DELETE /boards/name - Smaže nástěnku name a veškerý její obsah.
+    GET /board/name - Zobrazí obsah nástěnky name.
+    POST /board/name - Vloží nový příspěvek do nástěnky name. Příspěvek je vložený na konec seznamu.
+    PUT /board/name/id - Změní obsah příspěvku číslo id v nástěnce name.
+    DELETE /board/name/id - Smaže příspevek číslo id z nástěnky name.
+
+
+=================================================================ROZHRANÍ APLIKACÍ=====================================================================
+
+Klient se jmenuje isaclient, server se jmenuje isaserver.
+
+Oba programy po spuštění s parametrem -h vypíší nápovědu.
+
+Server akceptuje jeden povinný parametr, -p, který určuje port na ktorém bude server očekávat spojení. (./isaserver -p 5777)
+
+Příklad spuštění klienta:
+
+./isaclient -H <host> -p <port> <command> 
+
+
+=================================================================ENJOY=================================================================================
+
+
