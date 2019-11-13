@@ -310,7 +310,7 @@ string cmdBoardAdd(commandDataStruct command_data, vector<boardStruct> *boards_l
         boardStruct board;
         board.name = command_data.name;
         boards_list->push_back(board);
-        header=string("HTTP/1.1 201 OK \r\n\r\n");
+        header=string("HTTP/1.1 201 Created \r\n\r\n");
     };
     return header;
 }
@@ -371,7 +371,7 @@ string cmdItemAdd(commandDataStruct command_data, vector<boardStruct> *boards_li
             string content;
             if(getContent(request, &content)){
               board->posts.push_back(content);
-              header=string("HTTP/1.1 201 OK\r\n\r\n");
+              header=string("HTTP/1.1 201 Created\r\n\r\n");
 //              printBoardsList(*boards_list);
             }
             else{
@@ -398,7 +398,7 @@ string cmdItemDelete(commandDataStruct command_data, vector<boardStruct> *boards
         }
         else{
             board->posts.erase(board->posts.begin()+command_data.id-1);
-            header=string("HTTP/1.1 201 OK\r\n\r\n");
+            header=string("HTTP/1.1 201 Created\r\n\r\n");
         }
     };
     return header;
@@ -425,7 +425,7 @@ string cmdItemUpdate(commandDataStruct command_data, vector<boardStruct> *boards
                     header = string("HTTP/1.1 400 Bad Request\r\n\r\n");
                 } else {
                     board->posts.at(command_data.id-1) = content;
-                    header = string("HTTP/1.1 201 OK\r\n\r\n");
+                    header = string("HTTP/1.1 201 Created\r\n\r\n");
                 }
             }
         }
